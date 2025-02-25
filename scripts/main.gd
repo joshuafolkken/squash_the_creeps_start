@@ -1,21 +1,29 @@
 class_name Main
 extends Node
 
+@export var mob_scene: PackedScene
+
 var _test_color_rect: ColorRect
 
-@onready var version_label: Label = $VersionLabel
-
-
-func _init() -> void:
-	_test_color_rect = ColorRect.new()
-	add_child(_test_color_rect)
+@onready var _version_label: Label = $VersionLabel
+@onready var _mob_spawn_location: PathFollow3D = $MobSpawnPath/MobSpawnLocation
+@onready var _player: CharacterBody3D = $Player
 
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
-	version_label.text = ProjectSettings.get_setting("application/config/version")
+	_version_label.text = ProjectSettings.get_setting("application/config/version")
+
+	_init_test_color_rect()
 
 
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(_delta: float) -> void:
-	pass
+func _init_test_color_rect() -> void:
+	_test_color_rect = ColorRect.new()
+	add_child(_test_color_rect)
+
+
+func _on_mob_timer_timeout() -> void:
+	var mob: Mob = mob_scene.instantiate()
+	_mob_spawn_location.progress_ratio = randf()
+	mob.initialize(_mob_spawn_location.position, _player.position)
+	add_child(mob)
