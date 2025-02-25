@@ -11,7 +11,7 @@ config_version=5
 [application]
 
 config/name="Squash the Creeps (3D)"
-config/version="0.12.0"
+config/version="0.13.0"
 run/main_scene="uid://djcdy0d718ei3"
 config/features=PackedStringArray("4.4", "Forward Plus")
 config/icon="res://icon.png"
@@ -23,6 +23,12 @@ gdscript/warnings/unsafe_property_access=1
 gdscript/warnings/unsafe_method_access=1
 gdscript/warnings/unsafe_cast=1
 gdscript/warnings/unsafe_call_argument=1
+
+[display]
+
+window/size/viewport_width=720
+window/size/viewport_height=540
+window/description=""
 
 [editor_plugins]
 
