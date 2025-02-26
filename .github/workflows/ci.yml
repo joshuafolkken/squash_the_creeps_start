@@ -50,9 +50,10 @@ jobs:
         with:
           lfs: true
 
-      - uses: MikeSchulze/gdUnit4-action@v1.1.1
+      - uses: MikeSchulze/gdUnit4-action@v1.1.5
         with:
-          godot-version: "4.3"
+          godot-version: "4.4"
+          godot-status: "rc1"
           paths: |
             res://scripts/
             res://tests/
