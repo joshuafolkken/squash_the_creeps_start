@@ -3,8 +3,6 @@ extends Node
 
 @export var mob_scene: PackedScene
 
-var _test_color_rect: ColorRect
-
 @onready var _version_label: Label = $VersionLabel
 @onready var _mob_spawn_location: PathFollow3D = $MobSpawnPath/MobSpawnLocation
 @onready var _player: CharacterBody3D = $Player
@@ -18,8 +16,9 @@ func _ready() -> void:
 
 
 func _init_test_color_rect() -> void:
-	_test_color_rect = ColorRect.new()
-	add_child(_test_color_rect)
+	var test_color_rect := ColorRect.new()
+	test_color_rect.name = "test_color_rect"
+	add_child(test_color_rect)
 
 
 func _on_mob_timer_timeout() -> void:

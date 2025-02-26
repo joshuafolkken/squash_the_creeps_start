@@ -1,17 +1,17 @@
 extends GdUnitTestSuite
 
-const _SCENE_UID := "uid://djcdy0d718ei3"
+const MAIN_SCENE_PATH := "res://scenes/main.tscn"
 
 var _runner: GdUnitSceneRunner
 
 
 func before_test() -> void:
-	_runner = scene_runner(_SCENE_UID)
+	_runner = scene_runner(MAIN_SCENE_PATH)
 
 
 func test_example() -> void:
-	var box1: ColorRect = _runner.get_property("_test_color_rect")
-	assert_object(box1.color).is_equal(Color.WHITE)
+	var color_rect: ColorRect = _runner.find_child("test_color_rect")
+	assert_object(color_rect.color).is_equal(Color.WHITE)
 
 
 func test_version_label() -> void:
