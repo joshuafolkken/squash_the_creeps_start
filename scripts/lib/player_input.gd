@@ -11,3 +11,7 @@ static func get_movement_direction() -> Vector3:
 		)
 		. normalized()
 	)
+
+
+static func is_jump_triggered() -> bool:
+	return Input.is_action_just_pressed("jump")

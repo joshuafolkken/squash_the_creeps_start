@@ -1,14 +1,14 @@
 class_name Mob
 extends CharacterBody3D
 
+signal squashed
+
 const DIRECTION_RANDOM_ANGLE := PI / 4
 const MIN_SPEED_RANGE := 1
 const MAX_SPEED_RANGE := 50
-const MIN_DEFAULT_SPEED := 10
-const MAX_DEFAULT_SPEED := 18
 
-@export_range(MIN_SPEED_RANGE, MAX_SPEED_RANGE) var min_speed := MIN_DEFAULT_SPEED
-@export_range(MIN_SPEED_RANGE, MAX_SPEED_RANGE) var max_speed := MAX_DEFAULT_SPEED
+@export_range(MIN_SPEED_RANGE, MAX_SPEED_RANGE) var min_speed := 10
+@export_range(MIN_SPEED_RANGE, MAX_SPEED_RANGE) var max_speed := 18
 
 
 func _physics_process(_delta: float) -> void:
@@ -32,4 +32,9 @@ func _init_velocity() -> void:
 
 
 func _on_visible_on_screen_enabler_3d_screen_exited() -> void:
+	queue_free()
+
+
+func squash() -> void:
+	squashed.emit()
 	queue_free()
