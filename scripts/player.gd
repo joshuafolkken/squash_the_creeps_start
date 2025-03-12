@@ -1,5 +1,7 @@
 extends CharacterBody3D
 
+signal hit
+
 const STOMP_NORMAL_THRESHOLD := 0.1
 const MOB_GROUP := "mob"
 
@@ -95,3 +97,12 @@ func _bounce_on_mob(current_velocity: Vector3, mob: Mob) -> Vector3:
 	var result := current_velocity
 	result.y = bounce_impulse
 	return result
+
+
+func die() -> void:
+	hit.emit()
+	queue_free()
+
+
+func _on_mob_detector_body_entered(_body: Node3D) -> void:
+	die()
