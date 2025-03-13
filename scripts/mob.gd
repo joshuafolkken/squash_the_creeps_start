@@ -4,11 +4,16 @@ extends CharacterBody3D
 signal squashed
 
 const DIRECTION_RANDOM_ANGLE := PI / 4
-const MIN_SPEED_RANGE := 1
-const MAX_SPEED_RANGE := 50
 
-@export_range(MIN_SPEED_RANGE, MAX_SPEED_RANGE) var min_speed := 10
-@export_range(MIN_SPEED_RANGE, MAX_SPEED_RANGE) var max_speed := 18
+const SPEED_LIMITS = {
+	MIN = 1,
+	MAX = 50,
+	DEFAULT_MIN = 10,
+	DEFAULT_MAX = 18,
+}
+
+@export_range(SPEED_LIMITS.MIN, SPEED_LIMITS.MAX) var min_speed := SPEED_LIMITS.DEFAULT_MIN
+@export_range(SPEED_LIMITS.MIN, SPEED_LIMITS.MAX) var max_speed := SPEED_LIMITS.DEFAULT_MAX
 
 
 func _physics_process(_delta: float) -> void:

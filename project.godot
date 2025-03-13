@@ -11,10 +11,14 @@ config_version=5
 [application]
 
 config/name="Squash the Creeps (3D)"
-config/version="0.17.0"
+config/version="0.18.0"
 run/main_scene="uid://djcdy0d718ei3"
 config/features=PackedStringArray("4.4", "Forward Plus")
 config/icon="res://icon.png"
+
+[autoload]
+
+MusicPlayer="*res://scenes/music_player.tscn"
 
 [debug]
 
@@ -28,6 +32,7 @@ gdscript/warnings/unsafe_call_argument=1
 
 window/size/viewport_width=720
 window/size/viewport_height=540
+window/dpi/allow_hidpi=false
 window/description=""
 
 [editor_plugins]

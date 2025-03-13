@@ -2,8 +2,7 @@ extends CharacterBody3D
 
 signal hit
 
-const STOMP_NORMAL_THRESHOLD := 0.1
-const MOB_GROUP := "mob"
+const THRESHOLD_STOMP_NORMAL := 0.1
 
 @export var speed := 14.0
 @export var fall_acceleration := 75.0
@@ -66,29 +65,22 @@ func _apply_collisions(current_velocity: Vector3) -> Vector3:
 		var collision := get_slide_collision(index)
 		var collider: Node = collision.get_collider()
 
-		result = _handle_collision(result, collider, collision)
+		if _is_stomping_mob(collider, collision):
+			result = _bounce_on_mob(result, collider as Mob)
 
 	return result
 
 
-func _handle_collision(
-	current_velocity: Vector3, collider: Node, collision: KinematicCollision3D
-) -> Vector3:
-	if not _is_mob_collision(collider):
-		return current_velocity
-
-	if not _is_stomp_collision(collision):
-		return current_velocity
-
-	return _bounce_on_mob(current_velocity, collider as Mob)
+func _is_stomping_mob(collider: Node, collision: KinematicCollision3D) -> bool:
+	return _is_mob_collision(collider) and _is_stomp_collision(collision)
 
 
 func _is_mob_collision(collider: Node) -> bool:
-	return collider is Mob and collider.is_in_group(MOB_GROUP)
+	return collider is Mob and collider.is_in_group(GameConstants.GROUP_MOB)
 
 
 func _is_stomp_collision(collision: KinematicCollision3D) -> bool:
-	return Vector3.UP.dot(collision.get_normal()) > STOMP_NORMAL_THRESHOLD
+	return Vector3.UP.dot(collision.get_normal()) > THRESHOLD_STOMP_NORMAL
 
 
 func _bounce_on_mob(current_velocity: Vector3, mob: Mob) -> Vector3:

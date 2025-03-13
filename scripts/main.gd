@@ -1,31 +1,39 @@
 class_name Main
 extends Node
 
+enum GameState {
+	PLAYING,
+	GAME_OVER,
+}
+
 @export var mob_scene: PackedScene
 
-@onready var _version_label: Label = $VersionLabel
+var _current_state := GameState.PLAYING
+
 @onready var _mob_spawn_location: PathFollow3D = $MobSpawnPath/MobSpawnLocation
 @onready var _player: CharacterBody3D = $Player
 @onready var _mob_timer: Timer = $MobTimer
+@onready var _score_label: ScoreLabel = $UserInterface/ScoreLabel
+@onready var _retry: ColorRect = $UserInterface/Retry
 
 
 func _ready() -> void:
-	_version_label.text = ProjectSettings.get_setting("application/config/version")
-
-	_init_test_color_rect()
-
-
-func _init_test_color_rect() -> void:
-	var test_color_rect := ColorRect.new()
-	test_color_rect.name = "test_color_rect"
-	add_child(test_color_rect)
+	_retry.hide()
 
 
 func _spawn_mob() -> void:
+	if not mob_scene:
+		push_error("mob_scene is not available")
+		return
+
 	var mob: Mob = mob_scene.instantiate()
 	_mob_spawn_location.progress_ratio = randf()
 	mob.initialize(_mob_spawn_location.position, _player.position)
 	add_child(mob)
+
+	print("MOB!")
+
+	mob.squashed.connect(_score_label.on_mob_squashed)
 
 
 func _on_mob_timer_timeout() -> void:
@@ -33,4 +41,16 @@ func _on_mob_timer_timeout() -> void:
 
 
 func _on_player_hit() -> void:
+	_current_state = GameState.GAME_OVER
 	_mob_timer.stop()
+	_retry.show()
+
+
+func _reset_game() -> void:
+	get_tree().reload_current_scene()
+
+
+func _unhandled_input(event: InputEvent) -> void:
+	if event.is_action_pressed("ui_accept"):
+		if _current_state == GameState.GAME_OVER:
+			_reset_game()
