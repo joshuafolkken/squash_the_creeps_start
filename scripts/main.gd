@@ -31,8 +31,6 @@ func _spawn_mob() -> void:
 	mob.initialize(_mob_spawn_location.position, _player.position)
 	add_child(mob)
 
-	print("MOB!")
-
 	mob.squashed.connect(_score_label.on_mob_squashed)
 
 
