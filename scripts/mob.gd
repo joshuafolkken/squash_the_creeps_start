@@ -5,15 +5,23 @@ signal squashed
 
 const DIRECTION_RANDOM_ANGLE := PI / 4
 
-const SPEED_LIMITS = {
+const SPEED = {
 	MIN = 1,
 	MAX = 50,
-	DEFAULT_MIN = 10,
+	DEFAULT_MIN = 5,
 	DEFAULT_MAX = 18,
 }
 
-@export_range(SPEED_LIMITS.MIN, SPEED_LIMITS.MAX) var min_speed := SPEED_LIMITS.DEFAULT_MIN
-@export_range(SPEED_LIMITS.MIN, SPEED_LIMITS.MAX) var max_speed := SPEED_LIMITS.DEFAULT_MAX
+@export_range(SPEED.MIN, SPEED.MAX) var min_speed := SPEED.DEFAULT_MIN
+@export_range(SPEED.MIN, SPEED.MAX) var max_speed := SPEED.DEFAULT_MAX
+
+var _speed := randi_range(min_speed, max_speed)
+
+@onready var _animation_player: AnimationPlayer = $AnimationPlayer
+
+
+func _ready() -> void:
+	_animation_player.speed_scale = float(_speed) / min_speed
 
 
 func _physics_process(_delta: float) -> void:
@@ -31,9 +39,8 @@ func _init_position_and_rotation(start_position: Vector3, target_position: Vecto
 
 
 func _init_velocity() -> void:
-	var speed := randi_range(min_speed, max_speed)
 	var direction := Vector3.FORWARD.rotated(Vector3.UP, rotation.y)
-	velocity = direction * speed
+	velocity = direction * _speed
 
 
 func _on_visible_on_screen_enabler_3d_screen_exited() -> void:
