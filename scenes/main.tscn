@@ -97,6 +97,7 @@ grow_vertical = 2
 theme = SubResource("Theme_tbgi4")
 
 [node name="ScoreLabel" type="Label" parent="UserInterface"]
+layout_mode = 0
 offset_left = 40.0
 offset_top = 23.0
 offset_right = 128.0

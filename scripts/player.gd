@@ -10,12 +10,14 @@ const THRESHOLD_STOMP_NORMAL := 0.1
 @export var bounce_impulse := 16
 
 @onready var _pivot: Node3D = $Pivot
+@onready var _animation_player: AnimationPlayer = $AnimationPlayer
 
 
 func _physics_process(delta: float) -> void:
 	var input_direction := PlayerInput.get_movement_direction()
 	velocity = _calculate_velocity(input_direction, delta)
 	move_and_slide()
+	_pivot.rotation.x = PI / 6 * velocity.y / jump_impulse
 
 
 func _calculate_velocity(direction: Vector3, delta: float) -> Vector3:
@@ -32,6 +34,9 @@ func _calculate_velocity(direction: Vector3, delta: float) -> Vector3:
 func _apply_movement(current_velocity: Vector3, direction: Vector3) -> Vector3:
 	if direction != Vector3.ZERO:
 		_pivot.basis = Basis.looking_at(direction)
+		_animation_player.speed_scale = 4
+	else:
+		_animation_player.speed_scale = 1
 
 	var result := current_velocity
 	result.x = direction.x * speed
