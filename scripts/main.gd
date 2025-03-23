@@ -15,10 +15,14 @@ var _current_state := GameState.PLAYING
 @onready var _mob_timer: Timer = $MobTimer
 @onready var _score_label: ScoreLabel = $UserInterface/ScoreLabel
 @onready var _retry: ColorRect = $UserInterface/Retry
+@onready var _language_button: LanguageButton = $UserInterface/LanguageButton
 
 
 func _ready() -> void:
 	_retry.hide()
+	_score_label.show_score()
+
+	_language_button.language_changed.connect(_on_language_changed)
 
 
 func _spawn_mob() -> void:
@@ -52,3 +56,7 @@ func _unhandled_input(event: InputEvent) -> void:
 	if event.is_action_pressed("ui_accept"):
 		if _current_state == GameState.GAME_OVER:
 			_reset_game()
+
+
+func _on_language_changed() -> void:
+	_score_label.show_score()
