@@ -4,11 +4,11 @@ extends Node
 signal language_changed
 
 const SETTINGS = {PATH = "user://settings.cfg", SECTION = "language", KEY = "locale"}
-const DEFAULT_LOCALE = "en"
 
 const SUPPORTED_LOCALES: Dictionary[String, String] = {
 	"English": "en",
 	"日本語": "ja",
+	# "おふらんす": "fr",
 }
 
 
@@ -38,10 +38,12 @@ func load_saved_language() -> String:
 
 func _load_locale() -> String:
 	var config := ConfigFile.new()
+	var default_locale := OS.get_locale_language()
+	print(default_locale)
 	if config.load(SETTINGS.PATH) != OK:
 		_handle_config_error("load")
-		return DEFAULT_LOCALE
-	return config.get_value(SETTINGS.SECTION, SETTINGS.KEY, DEFAULT_LOCALE)
+		return default_locale
+	return config.get_value(SETTINGS.SECTION, SETTINGS.KEY, default_locale)
 
 
 func _save_locale(locale_code: String) -> void:
