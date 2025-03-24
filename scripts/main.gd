@@ -18,6 +18,11 @@ var _current_state := GameState.PLAYING
 @onready var _language_button: LanguageButton = $UserInterface/LanguageButton
 
 
+func _init() -> void:
+	# Settings.clear()
+	pass
+
+
 func _ready() -> void:
 	_retry.hide()
 	_score_label.show_score()
