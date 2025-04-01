@@ -6,6 +6,8 @@ enum GameState {
 	GAME_OVER,
 }
 
+const RETRY_ACTION := "ui_accept"
+
 @export var mob_scene: PackedScene
 
 var _current_state := GameState.PLAYING
@@ -17,10 +19,9 @@ var _current_state := GameState.PLAYING
 @onready var _retry: ColorRect = $UserInterface/Retry
 @onready var _language_button: LanguageButton = $UserInterface/LanguageButton
 
-
-func _init() -> void:
-	# Settings.clear()
-	pass
+# For debugging: Uncomment this line to clear settings
+# func _init() -> void:
+# 	Settings.clear()
 
 
 func _ready() -> void:
@@ -28,6 +29,7 @@ func _ready() -> void:
 	_score_label.show_score()
 
 	_language_button.language_changed.connect(_on_language_changed)
+	_language_button.error_reported.connect(_on_language_error)
 
 
 func _spawn_mob() -> void:
@@ -58,10 +60,14 @@ func _reset_game() -> void:
 
 
 func _unhandled_input(event: InputEvent) -> void:
-	if event.is_action_pressed("ui_accept"):
-		if _current_state == GameState.GAME_OVER:
-			_reset_game()
+	if event.is_action_pressed(RETRY_ACTION) and _current_state == GameState.GAME_OVER:
+		_reset_game()
 
 
-func _on_language_changed() -> void:
+func _on_language_changed(_locale_code: String) -> void:
 	_score_label.show_score()
+
+
+func _on_language_error(message: String) -> void:
+	push_warning("[Main] Language error: " + message)
+	# _show_error_message(message)
